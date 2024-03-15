@@ -4,7 +4,7 @@
 #include <pcl/common/transforms.h>
 #include <pcl/io/ply_io.h>
 #include <pcl_conversions/pcl_conversions.h>
-// #include <pcl_ros/point_cloud.hpp>
+#include <pcl_ros/point_cloud.h>
 #include <rclcpp/qos.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
@@ -52,10 +52,8 @@ SegmentationNode::SegmentationNode(const rclcpp::NodeOptions &node_options)
   params_.line_search_angle =
       this->declare_parameter("line_search_angle", params_.line_search_angle);
   params_.n_threads = this->declare_parameter("n_threads", params_.n_threads);
-  params_.r_min = this->declare_parameter("r_min", params_.r_min);
-  params_.r_max = this->declare_parameter("r_max", params_.r_max);
-  params_.max_fit_error =
-      this->declare_parameter("max_fit_error", params_.max_fit_error);
+  params_.r_min_square = this->declare_parameter("r_min", 0.04);
+  params_.r_max_square = this->declare_parameter("r_max", 50.0);
   // Params that need to be squared.
   double r_min, r_max, max_fit_error;
   if (this->get_parameter("r_min", r_min)) {
@@ -67,9 +65,7 @@ SegmentationNode::SegmentationNode(const rclcpp::NodeOptions &node_options)
   if (this->get_parameter("max_fit_error", max_fit_error)) {
     params_.max_error_square = max_fit_error * max_fit_error;
   }
-
   segmenter_ = std::make_shared<GroundSegmentation>(params_);
-
   std::string ground_topic, obstacle_topic, input_topic;
   ground_topic = this->declare_parameter("ground_output_topic", "ground_cloud");
   obstacle_topic =
@@ -85,8 +81,6 @@ SegmentationNode::SegmentationNode(const rclcpp::NodeOptions &node_options)
   tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
   tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
   RCLCPP_INFO(this->get_logger(), "Segmentation node initialized");
-  RCLCPP_INFO(this->get_logger(), "params_.r_min_square: %f",
-              params_.r_min_square);
 }
 
 void SegmentationNode::scanCallback(

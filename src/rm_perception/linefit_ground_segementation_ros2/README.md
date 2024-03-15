@@ -63,4 +63,5 @@ The default parameters should work on the KITTI dataset.
 ### Other
 
 - **n_threads**  Number of threads to use.
+- **latch**  Latch output point clouds in ROS node. 
 - **visualize** Visualize the segmentation result. **ONLY FOR DEBUGGING.** Do not set true during online operation.

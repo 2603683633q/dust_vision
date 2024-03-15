@@ -70,7 +70,7 @@ The **default from apt** PCL and Eigen is enough for FAST-LIO to work normally.
 ROS >= Foxy (Recommend to use ROS-Humble). [ROS Installation](https://docs.ros.org/en/humble/Installation.html)
 
 ### 1.2. **PCL && Eigen**
-PCL    >= 1.8,   Follow [PCL Installation](http://www.pointclouds.org/downloads/linux.html).
+PCL    >= 1.8,   Follow [PCL Installation](https://pointclouds.org/downloads/#linux).
 
 Eigen  >= 3.3.4, Follow [Eigen Installation](http://eigen.tuxfamily.org/index.php?title=Main_Page).
 
@@ -91,6 +91,7 @@ Clone the repository and colcon build:
     cd <ros2_ws>/src # cd into a ros2 workspace folder
     git clone https://github.com/Ericsii/FAST_LIO.git --recursive
     cd ..
+    rosdep install --from-paths src --ignore-src -y
     colcon build --symlink-install
     . ./install/setup.bash # use setup.zsh if use zsh
 ```
@@ -104,16 +105,24 @@ A. Please make sure the IMU and LiDAR are **Synchronized**, that's important.
 
 B. The warning message "Failed to find match for field 'time'." means the timestamps of each LiDAR points are missed in the rosbag file. That is important for the forward propagation and backwark propagation.
 
-C. We recommend to set the **extrinsic_est_en** to false if the extrinsic is give. As for the extrinsic initiallization, please refer to our recent work: [**Robust and Online LiDAR-inertial Initialization**](https://arxiv.org/abs/2202.11006).
+C. We recommend to set the **extrinsic_est_en** to false if the extrinsic is give. As for the extrinsic initiallization, please refer to our recent work: [**Robust Real-time LiDAR-inertial Initialization**](https://github.com/hku-mars/LiDAR_IMU_Init).
 
-### 3.1 For Avia
-Connect to your PC to Livox Avia LiDAR by following  [Livox-ros-driver2 installation](https://github.com/Livox-SDK/livox_ros_driver2), then
+### 3.1 Run use ros launch
+Connect to your PC to Livox LiDAR by following  [Livox-ros-driver2 installation](https://github.com/Livox-SDK/livox_ros_driver2), then
 ```bash
-    cd <ros2_ws>
-    . install/setup.bash # use setup.zsh if use zsh
-    ros2 launch fast_lio mapping.launch.py
-    ros2 launch livox_ros_driver2 msg_MID360_launch.py
+cd <ros2_ws>
+. install/setup.bash # use setup.zsh if use zsh
+ros2 launch fast_lio mapping.launch.py config_file:=avia.yaml
 ```
+
+Change `config_file` parameter to other yaml file under config directory as you need.
+
+Launch livox ros driver. Use MID360 as an example.
+
+```bash
+ros2 launch livox_ros_driver2 msg_MID360_launch.py
+```
+
 - For livox serials, FAST-LIO only support the data collected by the ``` livox_lidar_msg.launch ``` since only its ``` livox_ros_driver2/CustomMsg ``` data structure produces the timestamp of each LiDAR point which is very important for the motion undistortion. ``` livox_lidar.launch ``` can not produce it right now.
 - If you want to change the frame rate, please modify the **publish_freq** parameter in the [livox_lidar_msg.launch](https://github.com/Livox-SDK/livox_ros_driver/blob/master/livox_ros_driver2/launch/livox_lidar_msg.launch) of [Livox-ros-driver](https://github.com/Livox-SDK/livox_ros_driver2) before make the livox_ros_driver pakage.
 
@@ -150,7 +159,7 @@ Set ``` pcd_save_enable ``` in launchfile to ``` 1 ```. All the scans (in global
 <img src="doc/results/HKU_LG_Indoor.png" width=47% />
 <img src="doc/results/HKU_MB_002.png" width = 51% >
 
-Files: Can be downloaded from [google drive](https://drive.google.com/drive/folders/1YL5MQVYgAM8oAWUm7e3OGXZBPKkanmY1?usp=sharing) **!!!This ros1 bag should be convert to ros2!!!**
+Files: Can be downloaded from [google drive](https://drive.google.com/drive/folders/1CGYEJ9-wWjr8INyan6q1BZz_5VtGB-fP?usp=sharing)**!!!This ros1 bag should be convert to ros2!!!**
 
 Run:
 ```bash
@@ -163,7 +172,13 @@ ros2 bag play <your_bag_dir>
 
 **NCLT Dataset**: Original bin file can be found [here](http://robots.engin.umich.edu/nclt/).
 
-We produce [Rosbag Files](https://drive.google.com/drive/folders/1VBK5idI1oyW0GC_I_Hxh63aqam3nocNK?usp=sharing) and [a python script](https://drive.google.com/file/d/1leh7DxbHx29DyS1NJkvEfeNJoccxH7XM/view) to generate Rosbag files: ```python3 sensordata_to_rosbag_fastlio.py bin_file_dir bag_name.bag``` **!!!This ros1 bag should be convert to ros2!!!** To convert ros1 bag to ros2 bag, please follow the documentation [Convert rosbag versions](https://ternaris.gitlab.io/rosbags/topics/convert.html)
+We produce [Rosbag Files](https://drive.google.com/drive/folders/1VBK5idI1oyW0GC_I_Hxh63aqam3nocNK?usp=sharing) and [a python script](https://drive.google.com/file/d/1leh7DxbHx29DyS1NJkvEfeNJoccxH7XM/view) to generate Rosbag files: ```python3 sensordata_to_rosbag_fastlio.py bin_file_dir bag_name.bag```**!!!This ros1 bag should be convert to ros2!!!** To convert ros1 bag to ros2 bag, please follow the documentation [Convert rosbag versions](https://ternaris.gitlab.io/rosbags/topics/convert.html)
+    
+Run:
+```
+roslaunch fast_lio mapping_velodyne.launch
+rosbag play YOUR_DOWNLOADED.bag
+```
 
 ## 5.Implementation on UAV
 In order to validate the robustness and computational efficiency of FAST-LIO in actual mobile robots, we build a small-scale quadrotor which can carry a Livox Avia LiDAR with 70 degree FoV and a DJI Manifold 2-C onboard computer with a 1.8 GHz Intel i7-8550U CPU and 8 G RAM, as shown in below.
