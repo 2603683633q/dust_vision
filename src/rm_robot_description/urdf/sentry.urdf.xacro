@@ -23,11 +23,8 @@
     <child link = "base_footprint" />
     <origin xyz = "0 0 -0.722" rpy = "0 0 0"/>
   </joint>
-
-</robot>
-  <!-- <link name="gimbal_imu" /> -->
-
-  <!-- <link name="gimbal_link" />
+  
+   <link name="gimbal_link" />
 
   <joint name="gimbal_joint" type="floating">
     <parent link="livox_frame" />
@@ -49,4 +46,8 @@
     <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
     <parent link="camera_link" />
     <child link="camera_optical_frame" />
-  </joint> -->
+  </joint>
+
+</robot>
+  <!-- <link name="gimbal_imu" /> -->
+

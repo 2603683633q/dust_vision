@@ -62,7 +62,7 @@ def generate_launch_description():
         #GroupAction(
         #    actions=[rviz_node],
         #    condition=IfCondition(LaunchConfiguration('rviz'))
-        ),
+        # ),
     ])
 
     return ld

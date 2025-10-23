@@ -1,4 +1,5 @@
 # CSU-RM-Sentry
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map map_decision
 
 中南大学FYT机器人战队哨兵机器人上位机算法（定位与导航部分）。基于点云分割和Nav2导航框架，导航过程中上坡
 

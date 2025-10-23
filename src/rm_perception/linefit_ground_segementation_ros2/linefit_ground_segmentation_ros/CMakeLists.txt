@@ -7,7 +7,11 @@ project(linefit_ground_segmentation_ros)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_definitions(-std=c++17 -O3)
 
-find_package(ament_cmake_auto)
+find_package(PCL REQUIRED)
+find_package(pcl_ros REQUIRED)
+find_package(pcl_conversions REQUIRED)
+find_package(pcl_msgs REQUIRED)
+find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()
 ament_auto_add_executable(ground_segmentation_node src/ground_segmentation_node.cc)

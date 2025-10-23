@@ -1,0 +1,41 @@
+{
+    "data": [
+        {
+            "id": 0,
+            "name": "FrontBase",
+            "type": 0,
+            "x": 5.5,
+            "y": 7.4,
+            "angle": 0.0,
+            "connect": [
+                1
+            ],
+            "enemyWeights": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        {
+            "id": 1,
+            "name": "FirePoint",
+            "type": 0,
+            "x": 4,
+            "y": 3,
+            "angle": 0.0,
+            "connect": [
+                0
+            ],
+            "enemyWeights": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        }
+    ]
+}
+
