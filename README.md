@@ -1,5 +1,17 @@
-# CSU-RM-Sentry
+# DUST-RM-Sentry
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map map_decision
+
+**作者: 胡钰濠** 
+湖南科技大学DUST战队2025赛季哨兵上位机算法，高度参考了中南大学FYT机器人战队
+
+新增：1.horizon雷达ros2驱动
+     2.horizon与mid360进行点云合并
+     3.机器人上层决策代码
+     4.虚拟裁判系统代码，以便于调试
+     5.高度参考厦门大学的自瞄代码
+
+
+
 
 中南大学FYT机器人战队哨兵机器人上位机算法（定位与导航部分）。基于点云分割和Nav2导航框架，导航过程中上坡
 
@@ -56,33 +68,62 @@ https://gitee.com/SMBU-POLARBEAR/pb_rmsimulation
 
 ```sh
 src
-│
-├── rm_bringup                
-│
-├── rm_interfaces
-│
-├── rm_robot_description           
-│
-├── rm_autoaim                
-│
-├── rm_localization           
-│   ├── fast_lio        
-│   ├── point_lio   
-│   └── icp_registration
-│
+├── fake_msg_publisher
+│   ├── fake_msg_publisher
+│   ├── resource
+│   └── test
+├── global_interface
+│   └── msg
+├── hik_camera
+│   ├── config
+│   ├── hikSDK
+│   ├── include
+│   ├── launch
+│   └── src
+├── rm_auto_aim
+│   ├── armor_detector
+│   ├── armor_solver
+│   ├── armor_tracker
+│   ├── auto_aim_interfaces
+│   ├── docs
+│   └── rm_auto_aim
+├── rm_bringup
+│   ├── config
+│   └── launch
+├── rm_gimbal_description
+│   ├── docs
+│   └── urdf
+├── rm_hardware_driver
+│   ├── livox_ros2_driver
+│   └── livox_ros_driver2
+├── rm_localization
+│   ├── fast_lio
+│   ├── icp_registration
+│   └── point_lio
 ├── rm_navigation
-│   ├── src (Nav2) 
-│   └── third_party (TEB)
-│
+│   ├── src
+│   └── third_party
 ├── rm_perception
-│   ├── imu_complementary_filter
-│   ├── linefit_ground_segementation_ros2
-│   └── pointcloud_to_laserscan
-│
-└── rm_hardware_driver
-    ├── rm_camera_driver        
-    ├── rm_serial_driver  
-    └── livox_ros_driver2
+│   ├── imu_complementary_filter
+│   ├── linefit_ground_segementation_ros2
+│   ├── pointcloud_merger
+│   └── pointcloud_to_laserscan
+├── rm_robot_description
+│   ├── docs
+│   └── urdf
+├── rm_serial_driver
+│   ├── config
+│   ├── docs
+│   ├── include
+│   ├── launch
+│   └── src
+└── robot_decision
+    ├── include
+    ├── JsonFile
+    ├── launch
+    ├── resources
+    ├── sample
+    └── src
 ```
 
 ## 2. 安装
@@ -94,7 +135,7 @@ src
 克隆仓库到本地
 
 ```bash
-git clone https://github.com/CSU-FYT-Vision/CSU-RM-Sentry && cd CSU-RM-Sentry
+git clone https://github.com/2603683633q/dust_vision.git && cd DUST-RM-Sentry
 ```
 
 安装依赖
